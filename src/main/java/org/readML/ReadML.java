@@ -165,26 +165,7 @@ public class ReadML {
     }
     
     public static void main(String a[]) throws Exception {
-        try {
-            File file = new File("/home/madushi/Predicting_Number_of_Workers/pmml/ThroughputPredictions.csv");
 
-            bw = null;
-            FileWriter fw = new FileWriter(file,false);
-            if (!file.exists()) {
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-            }
-            fw = new FileWriter(file.getAbsoluteFile(), true);
-            bw = new BufferedWriter(fw);
-            bw.write("Throughput");
-
-            bw.write("\n");
-            bw.flush();
-            bw.close();
-
-        } catch (Exception e) {
-            System.out.println("Error when writing to the file");
-        }
         ReadML readML=new ReadML();
         readML.getNoOfWorkers(readML.predictThroughputPmml());
     }

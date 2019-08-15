@@ -58,7 +58,7 @@ public class ReadML {
     }
     public ArrayList<Double> predictThroughputPmml() throws Exception {
 
-        PMML pmml = loadModel("/home/madushi/Predicting_Number_of_Workers/pmml/Worker_predictions.pmml");
+        PMML pmml = loadModel("/home/madushi/Predicting_Number_of_Workers/pmml/Randomforest_predictions.pmml");
 
         ModelEvaluatorFactory modelEvaluatorFactory = ModelEvaluatorFactory.newInstance();
         ModelEvaluator<?> modelEvaluator = modelEvaluatorFactory.newModelEvaluator(pmml);
@@ -77,10 +77,12 @@ public class ReadML {
                 this.outputFields.put(outputField.getName(), outputField.getDataType());
             }
         }
-        String csvFile = "/home/madushi/FYP/FYP_New/ReadML/Sample.csv";
+        String csvFile = "/home/madushi/Predicting_Number_of_Workers/ReadMLPmml/ClientApplication-pmml/Sample_new.csv";
         BufferedReader br = null;
         String line = "";
         String COMMA_DELIMITER = ",";
+        noOfPartialSiddhiApps.clear();
+        noOfWorkers.clear();
 
         ArrayList<Double> output = new ArrayList<Double>();
         try {
@@ -90,8 +92,8 @@ public class ReadML {
             br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] tokens = line.split( COMMA_DELIMITER );
-                noOfWorkers.add(Integer.valueOf(tokens[0]));
-                noOfPartialSiddhiApps.add(Integer.valueOf(tokens[1]));
+                noOfWorkers.add(Integer.valueOf(tokens[1]));
+                noOfPartialSiddhiApps.add(Integer.valueOf(tokens[2]));
 
                 for(int i = 0; i < inputFields.size(); i++){
                     FieldValue pmmlValue = inputFields.get(i).prepare(Integer.parseInt(tokens[i]));
@@ -101,6 +103,7 @@ public class ReadML {
                 for (FieldName fieldName : outputFields.keySet()) {
                     if (result.containsKey(fieldName)) {
                         Object value = result.get(fieldName);
+                        System.out.println((Double) EvaluatorUtil.decode(value));
                         output.add((Double) EvaluatorUtil.decode(value));
                     }
                 }
@@ -124,7 +127,7 @@ public class ReadML {
     }
 
     public void getNoOfWorkers(ArrayList<Double> outputResult) throws IOException, InterruptedException {
-        int count = 0;
+        int count = 1;
         double maximumThroughput = outputResult.get(0);
         for (int i=0; i<outputResult.size(); i++){
             if(maximumThroughput < outputResult.get(i)){

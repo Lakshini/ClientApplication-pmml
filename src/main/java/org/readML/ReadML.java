@@ -127,7 +127,7 @@ public class ReadML {
     }
 
     public void getNoOfWorkers(ArrayList<Double> outputResult) throws IOException, InterruptedException {
-        int count = 1;
+        int count = 0;
         double maximumThroughput = outputResult.get(0);
         for (int i=0; i<outputResult.size(); i++){
             if(maximumThroughput < outputResult.get(i)){
